@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float speed = 3.5f;
     [SerializeField] private float fireRate = 0.15f;
+    [SerializeField] private sbyte lives = 3;
 
     private float _topBoundary = 0.0f;
     private float _rightBoundary = 11.3f;
@@ -67,5 +68,15 @@ public class Player : MonoBehaviour
             new Vector3(transform.position.x, transform.position.y + _offset, transform.position.z);
 
         Instantiate(laserPrefab, spawnLocation, Quaternion.identity);
+    }
+    
+    public void Damage()
+    {
+        lives--;
+
+        if (lives < 1)
+        {
+            Destroy(gameObject);
+        }
     }
 }
