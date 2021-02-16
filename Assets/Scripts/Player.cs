@@ -5,6 +5,8 @@ using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private GameObject laserPrefab;
+    
     [SerializeField] private float speed = 3.5f;
 
     private float _topBoundary = 0.0f;
@@ -21,6 +23,12 @@ public class Player : MonoBehaviour
     private void Update()
     {
         CalculateMovement();
+
+        if (Input.GetKeyDown(key:KeyCode.Space))
+        {
+            Instantiate(laserPrefab,transform.position, Quaternion.identity);
+            
+        }
     }
 
     private void CalculateMovement()
