@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     private float _rightBoundary = 11.3f;
     private float _bottomBoundary = -3.8f;
     private float _leftBoundary = -11.3f;
+    private float _offset = 0.8f;
 
     private void Start()
     {
@@ -26,7 +27,9 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(key:KeyCode.Space))
         {
-            Instantiate(laserPrefab,transform.position, Quaternion.identity);
+            Vector3 spawnLocation = new Vector3(transform.position.x, transform.position.y + _offset, transform.position.z);
+            
+            Instantiate(laserPrefab,spawnLocation, Quaternion.identity);
             
         }
     }
