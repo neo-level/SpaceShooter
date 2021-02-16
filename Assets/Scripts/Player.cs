@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject laserPrefab;
+    private SpawnManager _spawnManager;
 
     [SerializeField] private float speed = 3.5f;
     [SerializeField] private float fireRate = 0.15f;
@@ -22,6 +23,12 @@ public class Player : MonoBehaviour
     {
         // take the current position = new position(0,0,0).
         transform.position = new Vector3(0, 0, 0);
+            _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Spawn manager component not found.");
+        }
+        
     }
 
     private void Update()
@@ -76,6 +83,9 @@ public class Player : MonoBehaviour
 
         if (lives < 1)
         {
+            // Communicate with spawnmanager.
+            
+            _spawnManager.OnPlayerDeath();
             Destroy(gameObject);
         }
     }

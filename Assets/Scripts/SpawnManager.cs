@@ -9,6 +9,8 @@ public class SpawnManager : MonoBehaviour
 
     private sbyte _spawnInterval = 5;
 
+    private bool _stopSpawning;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -21,7 +23,7 @@ public class SpawnManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator SpawnRoutine()
     {
-        while (true)
+        while (!_stopSpawning)
         {
             Vector3 spawnPosition = enemyPrefab.GetComponent<Enemy>().GenerateRandomPosition();
 
@@ -31,5 +33,10 @@ public class SpawnManager : MonoBehaviour
             
             yield return new WaitForSeconds(_spawnInterval);
         }
+    }
+    
+    public void OnPlayerDeath()
+    {
+        _stopSpawning = true;
     }
 }
