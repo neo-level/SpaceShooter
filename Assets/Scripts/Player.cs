@@ -6,14 +6,16 @@ using UnityEngine.Serialization;
 public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject laserPrefab;
-    
+
     [SerializeField] private float speed = 3.5f;
+    [SerializeField] private float fireRate = 0.15f;
 
     private float _topBoundary = 0.0f;
     private float _rightBoundary = 11.3f;
     private float _bottomBoundary = -3.8f;
     private float _leftBoundary = -11.3f;
     private float _offset = 0.8f;
+    private float _canFire = -1.0f;
 
     private void Start()
     {
@@ -25,12 +27,14 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
 
-        if (Input.GetKeyDown(key:KeyCode.Space))
+        if (Input.GetKeyDown(key: KeyCode.Space) && Time.time > _canFire)
         {
-            Vector3 spawnLocation = new Vector3(transform.position.x, transform.position.y + _offset, transform.position.z);
+            _canFire = Time.time + fireRate;
             
-            Instantiate(laserPrefab,spawnLocation, Quaternion.identity);
-            
+            Vector3 spawnLocation =
+                new Vector3(transform.position.x, transform.position.y + _offset, transform.position.z);
+
+            Instantiate(laserPrefab, spawnLocation, Quaternion.identity);
         }
     }
 
@@ -44,9 +48,10 @@ public class Player : MonoBehaviour
 
         transform.Translate(direction * (speed * Time.deltaTime));
 
-        
+
         // Prevents the user from passing the top and bottom boundaries. "clamping" between two values.
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, _bottomBoundary, _topBoundary),0);
+        transform.position = new Vector3(transform.position.x,
+            Mathf.Clamp(transform.position.y, _bottomBoundary, _topBoundary), 0);
 
         // wraps the right and left boundaries, when the player reaches the edge, warp to the other side.
         if (transform.position.x >= _rightBoundary)
