@@ -14,13 +14,7 @@ public class Enemy : MonoBehaviour
     private float _rightBoundary = 9.5f;
     private float _leftBoundary = -9.5f;
     private float _spawnPoint = 6.5f;
-
-    private void Start()
-    {
-        // var startPosition = GenerateRandomPosition();
-        // Instantiate(enemy, startPosition, Quaternion.identity);
-    }
-
+    
     private void Update()
     {
         float timeBasedSpeed = speed * Time.deltaTime;
@@ -38,15 +32,9 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        /*
-         * if other is player, damage player then destroy us
-         * if other is laser, destroy us
-         */
-
         switch (other.tag)
         {
             case "Player":
-                // Damage the player.
                 Player player = other.transform.GetComponent<Player>();
                 
                 if (player != null)
@@ -63,6 +51,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Creates a random position on the X axis.
+    /// </summary>
+    /// <returns> Vector 3</returns>
     private Vector3 GenerateRandomPosition()
     {
         float randomXvalue = Random.Range(_leftBoundary, _rightBoundary);
