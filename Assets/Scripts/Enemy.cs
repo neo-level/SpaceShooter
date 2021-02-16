@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private GameObject enemy;
     [SerializeField] private float speed = 4.0f;
 
     private float _bottomBoundary = -5.5f;
@@ -55,7 +54,7 @@ public class Enemy : MonoBehaviour
     /// Creates a random position on the X axis.
     /// </summary>
     /// <returns> Vector 3</returns>
-    private Vector3 GenerateRandomPosition()
+    public Vector3 GenerateRandomPosition()
     {
         float randomXvalue = Random.Range(_leftBoundary, _rightBoundary);
 
