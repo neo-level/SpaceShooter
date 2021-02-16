@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject enemyContainer;
 
     private sbyte _spawnInterval = 5;
 
@@ -24,8 +25,10 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 spawnPosition = enemyPrefab.GetComponent<Enemy>().GenerateRandomPosition();
 
-            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-
+            GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            // Move the enemy to the container.
+            newEnemy.transform.parent = enemyContainer.transform;
+            
             yield return new WaitForSeconds(_spawnInterval);
         }
     }
