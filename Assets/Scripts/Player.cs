@@ -20,6 +20,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        CalculateMovement();
+    }
+
+    private void CalculateMovement()
+    {
         // Move player.
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
@@ -27,26 +32,19 @@ public class Player : MonoBehaviour
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
         transform.Translate(direction * (speed * Time.deltaTime));
+
         
-        // Prevents the user from passing the top and bottom boundaries.
-        if (transform.position.y >= _topBoundary)
-        {
-            transform.position = new Vector3(transform.position.x, _topBoundary, 0);
-        }
-        else if (transform.position.y <= _bottomBoundary)
-        {
-            transform.position = new Vector3(transform.position.x, _bottomBoundary, 0);
-        }
-        
+        // Prevents the user from passing the top and bottom boundaries. "clamping" between two values.
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, _bottomBoundary, _topBoundary),0);
+
         // wraps the right and left boundaries, when the player reaches the edge, warp to the other side.
         if (transform.position.x >= _rightBoundary)
         {
-            transform.position = new Vector3(_leftBoundary,transform.position.y,0);
+            transform.position = new Vector3(_leftBoundary, transform.position.y, 0);
         }
         else if (transform.position.x <= _leftBoundary)
         {
-            transform.position = new Vector3(_rightBoundary,transform.position.y,0);
-
+            transform.position = new Vector3(_rightBoundary, transform.position.y, 0);
         }
     }
 }
