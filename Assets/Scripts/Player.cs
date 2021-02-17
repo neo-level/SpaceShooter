@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private GameObject tripleShotPrefab;
     private SpawnManager _spawnManager;
 
     [SerializeField] private float speed = 3.5f;
@@ -19,16 +20,21 @@ public class Player : MonoBehaviour
     private float _offset = 1.05f;
     private float _canFire = -1.0f;
 
+    private float _tripleShotXOffset = -1.35f;
+    private float _tripleShotYOffset = 0.3f;
+
+
+    [SerializeField] private bool _isTripleShotActive;
+
     private void Start()
     {
         // take the current position = new position(0,0,0).
         transform.position = new Vector3(0, 0, 0);
-            _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         if (_spawnManager == null)
         {
             Debug.LogError("Spawn manager component not found.");
         }
-        
     }
 
     private void Update()
@@ -71,12 +77,29 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time + fireRate;
 
-        Vector3 spawnLocation =
-            new Vector3(transform.position.x, transform.position.y + _offset, transform.position.z);
 
-        Instantiate(laserPrefab, spawnLocation, Quaternion.identity);
+        if (_isTripleShotActive)
+        {
+            Vector3 spawnLocation =
+                new Vector3(
+                    x: transform.position.x + _tripleShotXOffset,
+                    y: transform.position.y + _tripleShotYOffset,
+                    z: transform.position.z);
+
+            Instantiate(tripleShotPrefab, spawnLocation, Quaternion.identity);
+        }
+        else
+        {
+            Vector3 spawnLocation =
+                new Vector3(
+                    x: transform.position.x, 
+                    y: transform.position.y + _offset, 
+                    z: transform.position.z);
+
+            Instantiate(laserPrefab, spawnLocation, Quaternion.identity);
+        }
     }
-    
+
     public void Damage()
     {
         lives--;
@@ -84,7 +107,7 @@ public class Player : MonoBehaviour
         if (lives < 1)
         {
             // Communicate with spawnmanager.
-            
+
             _spawnManager.OnPlayerDeath();
             Destroy(gameObject);
         }
