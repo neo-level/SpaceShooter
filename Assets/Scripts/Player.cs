@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     private float _rightBoundary = 11.3f;
     private float _bottomBoundary = -3.8f;
     private float _leftBoundary = -11.3f;
-    private float _offset = 0.8f;
+    private float _offset = 1.05f;
     private float _canFire = -1.0f;
 
     private void Start()
